@@ -64,7 +64,7 @@ dependencies {
     implementation 'com.github.heruoxin.Delegated-Scopes-Manager:client:master-SNAPSHOT'
     implementation 'moe.shizuku.privilege:api:3.1.0'
     
-    implementation 'me.rosuh:AndroidFilePicker:0.6.1'
+    implementation 'me.rosuh:AndroidFilePicker:1.0.1' //0.6.1'
     implementation 'com.drakeet.about:about:2.4.1'
     implementation 'com.drakeet.multitype:multitype:4.2.0'
     implementation 'androidx.browser:browser:1.2.0'
