@@ -64,10 +64,10 @@ dependencies {
     implementation 'com.github.heruoxin.Delegated-Scopes-Manager:client:master-SNAPSHOT'
 
     //Shizuku + libsu for shell/root services
-    def shizuku_version = '13.5.4'//'12.1.0'
-    implementation "dev.rikka.shizuku:api:$shizuku_version"
-    implementation "dev.rikka.shizuku:provider:$shizuku_version"
-//    implementation "dev.rikka.tools.refine:runtime:$refine_version"
+    def shizuku_version = '13.1.5'//'12.1.0' 5.4
+    implementation "dev.rikka.shizuku:api:${shizuku_version}"
+    implementation "dev.rikka.shizuku:provider:${shizuku_version}"
+    implementation "dev.rikka.tools.refine:runtime:${refine_version}"
 
     
     //implementation 'moe.shizuku.privilege:api:3.1.0'
