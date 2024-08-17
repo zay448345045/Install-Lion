@@ -67,7 +67,7 @@ dependencies {
     def shizuku_version = '13.5.4'//'12.1.0'
     implementation "dev.rikka.shizuku:api:$shizuku_version"
     implementation "dev.rikka.shizuku:provider:$shizuku_version"
-    implementation "dev.rikka.tools.refine:runtime:$refine_version"
+//    implementation "dev.rikka.tools.refine:runtime:$refine_version"
 
     
     //implementation 'moe.shizuku.privilege:api:3.1.0'
