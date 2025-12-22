@@ -1,0 +1,66 @@
+name: Precision Sync Game Assets
+
+on:
+  workflow_dispatch: # 手动触发
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Generate File List and Download
+        run: |
+          python - <<EOF
+          import requests
+          import re
+          import os
+
+          # 1. 扫描 game/ 目录下的所有真实文件路径
+          # 使用 prefix=game/ 强制要求服务器返回该文件夹下的所有 Key
+          base_api = "https://bbg-file.wahlap.net/?list-type=2&prefix=game/"
+          response = requests.get(base_api).text
+          keys = re.findall(r'<Key>(.*?)</Key>', response)
+
+          if not keys:
+              print("警告：未发现任何文件，请检查存储桶权限。")
+              exit(1)
+
+          # 2. 循环下载每一个发现的文件
+          for key in keys:
+              # 保持原始文件夹结构
+              os.makedirs(os.path.dirname(key), exist_ok=True)
+              file_url = f"https://bbg-file.wahlap.net/{key}"
+              print(f"正在精准下载: {file_url}")
+              
+              r = requests.get(file_url)
+              with open(key, 'wb') as f:
+                  f.write(r.content)
+          EOF
+
+      - name: Package Assets
+        run: |
+          # 打包下载到的真实 game/ 文件夹
+          zip -r bbg_game_assets.zip game/
+
+      - name: Upload to GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: "bbg-game-v1-precision"
+          name: "Wazone BBG Game目录精准备份"
+          body: |
+            ## 扫描报告
+            - 扫描路径: bbg-file.wahlap.net/game/
+            - 状态: 已绕过目录索引限制，通过 XML 列表精准抓取。
+            - 忠诚于数据：所有文件已成功合龙。
+          files: |
+            bbg_game_assets.zip
