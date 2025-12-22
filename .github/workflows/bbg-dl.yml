@@ -1,0 +1,38 @@
+name: Sync Game Assets to Release
+
+on:
+  workflow_dispatch: # 手动触发
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Download Game Directory
+        run: |
+          # 仅针对 game/ 目录进行递归下载
+          # -r: 递归, -np: 不下载父目录, -nH: 不创建域名文件夹, --cut-dirs=0: 保留路径
+          wget -r -np -nH --cut-dirs=0 https://bbg-file.wahlap.net/game/
+
+      - name: Compress Game Assets
+        run: |
+          # 将下载好的 game 文件夹打包
+          zip -r bbg_game_assets.zip game/
+
+      - name: Upload to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "bbg-game-v1"
+          name: "BBG Game目录全量备份"
+          body: |
+            ## 备份说明
+            - 目标地址: https://bbg-file.wahlap.net/game/
+            - 包含内容: chs/cht/jap 各版本的 version_release.txt 及相关配置。
+            - 忠诚于数据: 自动同步完成。
+          files: |
+            bbg_game_assets.zip
