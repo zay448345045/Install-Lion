@@ -1,0 +1,59 @@
+name: Jubeat Data Precision Sync
+
+on:
+  workflow_dispatch: # 手动触发运行
+
+jobs:
+  jubeat_sync:
+    runs-on: ubuntu-latest
+    # 授予写入权限，以便创建 Release 和上传文件
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v5
+
+      - name: Install 7-Zip
+        run: sudo apt-get install -y p7zip-full
+
+      - name: Download, Compress and Split
+        run: |
+          echo "--- 步骤 1: 正在从 OneDrive 搬运原始数据 ---"
+          # -L 跟踪重定向, -A 模拟浏览器
+          URL="https://addpr-my.sharepoint.com/personal/realtvop_addpr_onmicrosoft_com/_layouts/15/download.aspx?SourceUrl=%2Fpersonal%2Frealtvop%5Faddpr%5Fonmicrosoft%5Fcom%2FDocuments%2Fjubeat%5Fdata%2Etar"
+          curl -L -A "Mozilla/5.0" "$URL" -o jubeat_data.tar
+
+          echo "--- 步骤 2: 检查下载文件大小 ---"
+          ls -lh jubeat_data.tar
+
+          echo "--- 步骤 3: 启动 7z 分卷压缩 (1.9GB/包) ---"
+          # a: 添加到压缩包
+          # -v1900m: 1.9GB 分卷
+          # -mx0: 仅存储模式，速度最快且不破坏AB包原始结构
+          7z a jubeat_archive.7z jubeat_data.tar -v1900m -mx0
+
+          echo "--- 步骤 4: 清理原始大文件以释放磁盘空间 ---"
+          rm jubeat_data.tar
+          
+          echo "--- 分卷准备就绪 ---"
+          ls -lh jubeat_archive.7z.*
+
+      - name: Create Release and Upload Parts
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "jubeat-v${{ github.run_number }}"
+          name: "Jubeat Data 本体全量备份 (分卷版)"
+          body: |
+            ## 博士，数据合龙报告
+            - **原始资源**: `jubeat_data.tar`
+            - **存储格式**: 7-Zip 分卷 (.7z.001, .7z.002...)
+            - **单包限额**: 1.9GB
+            - **解压指引**: 
+              1. 下载所有分卷。
+              2. 使用 7-Zip 打开 `jubeat_archive.7z.001`。
+              3. 提取后即可获得完整的 `.tar` 本体。
+            
+            **忠诚于数据的绝对完整。**
+          files: |
+            jubeat_archive.7z.*
