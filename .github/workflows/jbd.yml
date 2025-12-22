@@ -18,8 +18,11 @@ jobs:
         run: sudo apt-get install -y p7zip-full
 
       - name: Download, Compress and Split
+        env:
+          SP_COOKIE: ${{ secrets.SP_COOKIE }}
+        
         run: |
-          echo "--- 步骤 1: 正在从 OneDrive 搬运原始数据 ---"
+          echo "--- 步骤 1: 正在从 OneDrive 搬运原始数据正在发起带身份验证的下载 ---"
           # -L 跟踪重定向, -A 模拟浏览器
           URL="https://addpr-my.sharepoint.com/personal/realtvop_addpr_onmicrosoft_com/_layouts/15/download.aspx?SourceUrl=%2Fpersonal%2Frealtvop%5Faddpr%5Fonmicrosoft%5Fcom%2FDocuments%2Fjubeat%5Fdata%2Etar"
           curl -L -A "Mozilla/5.0" "$URL" -o jubeat_data.tar
