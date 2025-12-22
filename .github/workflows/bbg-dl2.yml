@@ -11,10 +11,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.9'
 
@@ -53,10 +53,10 @@ jobs:
           zip -r bbg_game_assets.zip game/
 
       - name: Upload to GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
-          tag_name: "bbg-game-v1-precision"
-          name: "Wazone BBG Game目录精准备份"
+          tag_name: "bbg-game-v1-precision2"
+          name: "Wazone BBG Game目录精准备份2"
           body: |
             ## 扫描报告
             - 扫描路径: bbg-file.wahlap.net/game/
