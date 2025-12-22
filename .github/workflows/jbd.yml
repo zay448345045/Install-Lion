@@ -26,8 +26,8 @@ jobs:
           # -L 跟踪重定向, -A 模拟浏览器
           URL="https://addpr-my.sharepoint.com/personal/realtvop_addpr_onmicrosoft_com/_layouts/15/download.aspx?SourceUrl=%2Fpersonal%2Frealtvop%5Faddpr%5Fonmicrosoft%5Fcom%2FDocuments%2Fjubeat%5Fdata%2Etar"
           curl -L -A "Mozilla/5.0" \
--H "Cookie: $SP_COOKIE" \
-"$URL" -o jubeat_data.tar
+               -H "Cookie: $SP_COOKIE" \
+          "$URL" -o jubeat_data.tar
 
           echo "--- 步骤 2: 检查下载文件大小 ---"
           ls -lh jubeat_data.tar
