@@ -17,7 +17,7 @@ jobs:
         run: |
           # 仅针对 game/ 目录进行递归下载
           # -r: 递归, -np: 不下载父目录, -nH: 不创建域名文件夹, --cut-dirs=0: 保留路径
-          wget -r -np -nH --cut-dirs=0 https://bbg-file.wahlap.net/game/
+          wget -r -np -nH --cut-dirs=0 https://bbg-file.wahlap.net/game/chs/
 
       - name: Compress Game Assets
         run: |
