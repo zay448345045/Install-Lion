@@ -1,0 +1,55 @@
+name: Wazone DLL Brain-Harvest
+
+on:
+  workflow_dispatch: # 手动触发
+
+jobs:
+  extract_dlls:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v5
+
+      - name: Precise DLL Extraction
+        run: |
+          echo "--- 正在从清单中检索所有代码资产 ---"
+          # 提取所有包含 .dll 的行，并排除可能的无用干扰
+          grep -i "\.dll" wazone_links.txt > dll_targets.txt
+          
+          mkdir -p dll_vault
+          
+          # 逐行下载
+          while read -r url; do
+            if [[ -z "$url" ]]; then continue; fi
+            
+            # 提取相对路径，保持结构 (例如 Managed/Assembly-CSharp.dll)
+            # 假设路径在 .net/ 之后开始
+            rel_path=$(echo "$url" | sed 's/.*\.net\///')
+            
+            local_file="dll_vault/$rel_path"
+            mkdir -p "$(dirname "$local_file")"
+            
+            echo "正在捕获: $rel_path"
+            curl -L -s "$url" -o "$local_file"
+          done < dll_targets.txt
+
+      - name: Package Brain Assets
+        run: |
+          echo "--- 打包代码逻辑库 ---"
+          # 代码库通常很小，直接打成一个 7z 包即可
+          7z a wazone_logic_dlls.7z ./dll_vault/* -mx5
+
+      - name: Upload Logic to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "wazone-logic-core"
+          name: "Wazone 核心逻辑 DLL 库"
+          body: |
+            ## 博士，代码资产已封存
+            - 包含所有发现的 `.dll` 文件
+            - 保持了原始目录结构
+            - 建议优先分析 `Assembly-CSharp.dll`
+          files: wazone_logic_dlls.7z
