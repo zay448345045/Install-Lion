@@ -24,7 +24,7 @@ jobs:
         run: |
           echo "--- 步骤 1: 正在从 OneDrive 搬运原始数据正在发起带身份验证的下载 ---"
           # -L 跟踪重定向, -A 模拟浏览器
-          URL="https://addpr-my.sharepoint.com/personal/realtvop_addpr_onmicrosoft_com/_layouts/15/download.aspx?SourceUrl=%2Fpersonal%2Frealtvop%5Faddpr%5Fonmicrosoft%5Fcom%2FDocuments%2Fjubeat%5Fdata%2Etar"
+URL="https://file-cdn.gitcode.com/4104105/releases/untagger_81fdbbca4c8f4184b95fed3018f1f304/CTW-v4.4.221%E6%B1%89%E5%8C%96%E4%BF%AE%E5%A4%8D-mod%E8%8F%9C%E5%8D%95_kill2%E5%A4%87%E7%94%A8%E7%89%88B.apk?auth_key=1767386072-5257b7d2440346e19ee512ebdb0310e8-0-b1731662616fbe54358c5d5806f8c8d58d8bebd98dfea4186f8f2e2c7f003830"          #URL="https://addpr-my.sharepoint.com/personal/realtvop_addpr_onmicrosoft_com/_layouts/15/download.aspx?SourceUrl=%2Fpersonal%2Frealtvop%5Faddpr%5Fonmicrosoft%5Fcom%2FDocuments%2Fjubeat%5Fdata%2Etar"
           curl -L -A "Mozilla/5.0" \
                -H "Cookie: $SP_COOKIE" \
           "$URL" -o jubeat_data.tar
@@ -47,8 +47,8 @@ jobs:
       - name: Create Release and Upload Parts
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: "jubeat-v${{ github.run_number }}"
-          name: "Jubeat Data 本体全量备份 (分卷版)"
+          tag_name: "jubea2t-v${{ github.run_number }}"
+          name: "Jubeat2 Data 本体全量备份 (分卷版)"
           body: |
             ## 博士，数据合龙报告
             - **原始资源**: `jubeat_data.tar`
