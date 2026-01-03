@@ -25,7 +25,7 @@ jobs:
         run: |
           echo "--- 步骤 1: 正在从 OneDrive 搬运原始数据正在发起带身份验证的下载 ---"
           # -L 跟踪重定向, -A 模拟浏览器
-          URL="https://file-cdn.gitcode.com/4104105/releases/untagger_81fdbbca4c8f4184b95fed3018f1f304/CTW-v4.4.221%E6%B1%89%E5%8C%96%E4%BF%AE%E5%A4%8D-mod%E8%8F%9C%E5%8D%95_kill2%E5%A4%87%E7%94%A8%E7%89%88B.apk?auth_key=1767386991-64b41aa163c847fc89946aacaa5f0daf-0-765c6143a7d4cf4c88d2358f0923d05abba58898237283dd634bd964fddbb27e" 
+          URL="https://file-cdn.gitcode.com/4104105/releases/untagger_fe85b8e4d93b4040b86f2bacbcf8ff40/GTA_%20CTW_4.4.221.apk?auth_key=1767438909-98e0471510614d82aacd8d3bf5e98ea7-0-4d40785477e3429f0cf7d9d70647b1b7886f94b30440c3f375cb247de9c50235" 
 
           curl -L -A "Mozilla/5.0" \
                -H "Cookie: $SP_COOKIE" \
